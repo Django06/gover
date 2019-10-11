@@ -1,0 +1,135 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+      <div fxLayoutAlign="center center">
+        <mat-icon>filter_list</mat-icon> <span style="margin-left: 2px"> Advenced search</span>
+      </div>
+      </mat-panel-title>
+      <mat-panel-description>
+       click to switch to advenved search
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div [formGroup]="form" fxLayout="row" fxLayoutAlign="space-around center"> 
+  <div>
+      <fieldset class=" mb-2">
+          <legend><em>Personal information :</em></legend>
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="4px">
+              <mat-form-field fxFlex class="w-100" appearance="outline">
+                  <mat-label><em> User</em></mat-label>
+                  <mat-select formControlName="user">
+                    <mat-option *ngFor="let user of users$" [value]="user.name">
+                      {{user.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            <mat-form-field fxFlex class="w-100" appearance="outline">
+                <mat-label><em>Date</em></mat-label>
+                <input matInput [matDatepicker]="pickerStart" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+                <mat-datepicker #pickerStart></mat-datepicker>
+              </mat-form-field>
+          </div>
+        </fieldset>
+  </div>
+  <div>
+      <fieldset class=" mb-2">
+          <legend><em>Price between :</em></legend>
+          <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label><em>Min</em></mat-label>
+              <input appNumberOnly numericType="decimal" matInput formControlName="priceMin" placeholder="ex: 1234" type="number" min="0">
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label><em>Max</em></mat-label>
+              <input appNumberOnly numericType="decimal" matInput formControlName="priceMax" placeholder="ex: 1234" type="number">
+            </mat-form-field>
+          </div>
+        </fieldset>
+  </div>
+     
+
+    </div>
+ <div fxLayoutAlign="center center">
+    <button 
+    style="background-color: #efd673;"
+    (click)="filter()"
+    mat-button
+  >
+    <span style=" color:#2B2D42">Apply search</span>
+  </button>
+ </div>
+
+  </mat-expansion-panel>
+</mat-accordion>
+<div class="card-table">
+        <mat-toolbar>
+          <mat-toolbar-row>
+            <span> History </span>
+            <span fxFlex></span>
+            <mat-paginator
+              class="primary"
+              [pageSize]="10"
+              [pageSizeOptions]="[10, 25, 50, 100]"
+              showFirstLastButtons
+            >
+            </mat-paginator>
+  
+            <div class="button-row">
+              <button mat-icon-button color="primary" matTooltip="refresh">
+                <mat-icon>refresh</mat-icon>
+              </button>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+        <div fxLayout="column" style="height: 70vh;overflow: auto;">
+          <table mat-table style="width: 100%;" [dataSource]="dataSource">
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element">{{element.idJourneeDetail}}</td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">{{element.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="montant">
+              <th mat-header-cell *matHeaderCellDef>Montant</th>
+              <td mat-cell *matCellDef="let element">{{element.prix}}</td>
+            </ng-container>
+            <ng-container matColumnDef="motif">
+              <th mat-header-cell *matHeaderCellDef>Motif</th>
+              <td mat-cell *matCellDef="let element">{{element.motif}}</td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let element">{{element.date |date}}</td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
+  
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="cursor-pointer"
+            ></tr>
+          </table>
+  
+          <div class="pt-1" fxLayout="row" fxLayoutAlign="center center">
+            <ng-container *ngIf="!isLoading; else loadingTemplate">
+              <ng-container *ngIf="error; else emptyTemplate">
+                <mat-error>{{ error }}</mat-error>
+              </ng-container>
+              <ng-template #emptyTemplate>
+                <p *ngIf="dataSource?.length == 0">no history yet .</p>
+              </ng-template>
+            </ng-container>
+            <ng-template #loadingTemplate>
+              <mat-spinner mode="indeterminate" [diameter]="32"> </mat-spinner>
+            </ng-template>
+          </div>
+        </div>
+      </div>

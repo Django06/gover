@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Modify jounney</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+   <div>
+    <div style="margin-bottom: 5px">
+        <span style="font-size: large;">User:</span>
+          <span
+            style="text-align: center;font-size: large;font-weight: 300;color: #d9b219">
+            {{ data.row.name }}</span>
+    
+      </div>
+   </div>
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label><em>Montant</em></mat-label>
+      <input
+      appNumberOnly
+      numericType="decimal"
+        matInput
+        formControlName="montant"
+        type="number"
+      />
+      <mat-error *ngIf="!!form.controls.montant.errors?.required">required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label><em>Motif</em></mat-label>
+      <input
+        matInput
+        formControlName="motif"
+        type="text"
+      />
+      <mat-error *ngIf="!!form.controls.motif.errors?.required">required</mat-error>
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button color="primary" (click)="addJourney()">Modify</button>
+</div>

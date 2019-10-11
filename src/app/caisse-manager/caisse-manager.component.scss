@@ -1,0 +1,25 @@
+
+  .color-hover-caisse-active {
+    border-bottom: 5px solid transparent;
+    margin-bottom: 10px !important     
+  }
+  .color-hover-caisse-active:hover {
+    border: none;
+    border-bottom: 5px solid #747573;
+  }
+
+  .color-hover-caisse-inactive {
+    transition: all 0.25s ease-in;
+    border-bottom: 5px solid transparent;
+    margin-bottom: 10px !important     
+  }
+  .color-hover-caisse-inactive:hover {
+    transform: translateY(-5px);
+    border: none;
+    border-bottom: 5px solid #abd466;
+  }
+
+
+
+  //
+  

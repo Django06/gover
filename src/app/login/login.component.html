@@ -1,0 +1,51 @@
+<div class="login-container" fxLayout="row">
+  <div
+    fxFlex="70"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    class="welcom-part"
+  >
+    <div class="logo">
+      <img class="logo-img" src="assets/logo.png" />
+    </div>
+    <div class="welcom-text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+      ullamcorper nisl erat, vel convallis elit fermentum pellentesque. Sed
+      mollis velit facilisis facilisis viverra.
+    </div>
+  </div>
+  <div fxFlex="30" class="login-part" fxLayout="column" fxLayoutAlign="center center" style="padding: 128px 48px">
+    
+     <div style="font-size: 21px;padding-bottom: 25px;">LOGIN TO YOUR ACCOUNT</div>
+     <div>
+         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="center" >
+            <mat-form-field appearance="standard">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" required>
+              <mat-error *ngIf="!!f.username.errors?.required">required.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Password</mat-label>
+              <input #pwd matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
+              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              <mat-error *ngIf="!!f.password.errors?.required">required.</mat-error>
+         
+            </mat-form-field>
+            <button class="w-100 test" class="login-button" mat-flat-button type="submit" color="primary"
+              [disabled]="loginForm.invalid || isLoading">
+              <ng-container *ngIf="!isLoading; else loadingTemplate">
+                Connexion
+              </ng-container>
+              <ng-template #loadingTemplate>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <mat-spinner mode="indeterminate" [diameter]="40">
+                  </mat-spinner>
+                </div>
+              </ng-template>
+            </button>
+          </form>
+        </div>
+  
+    </div>
+  </div>
+

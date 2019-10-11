@@ -1,0 +1,58 @@
+
+<div>
+  <div class=" bg-white shadow-1 " style="height: 40px; margin-bottom: 10px; overflow: hidden; border-radius: 1px;">
+    <div (tapClick)="addCaisse()" fxLayout="row" fxLayoutAlign="center center" matRipple
+    matRippleColor="#2196f31f">
+       <span>
+        <button (click)="addCaisse()" mat-icon-button aria-label="Example icon-button with a heart icon">
+            <mat-icon style="color:#000;">
+                add</mat-icon>
+          </button>
+         </span>
+    </div>
+  </div>
+
+<div
+  fxLayoutAlign="center start"
+  class="fullCard"
+  fxLayout="row wrap"
+  fxLayoutGap="20px" class="mb-2" >
+  <div *ngFor="let caiss of caises" [className]="caiss.status !=1 ? 'color-hover-caisse-active' : 'color-hover-caisse-inactive p-relative bg-white shadow-1 '" class=" " 
+  style="width: 250px;height: 175px;overflow: hidden; border-radius: 1px;">
+    <div class="px-1 py-1"> 
+        <p  *ngIf="caiss.status===0" style="margin: 0; font-weight:400" class="small font-weight-medium text-uppercase text-muted lts-2px" >
+            <mat-icon style="color:#e85858;font-size:small " mat-list-icon>
+                fiber_manual_record</mat-icon>
+        <span>Closed</span>
+      </p>
+        <p *ngIf="caiss.status===1" style="margin: 0; font-weight:400" class="small font-weight-medium text-uppercase text-muted lts-2px" >
+            <mat-icon style="color:#abd466;font-size:small " mat-list-icon>
+                fiber_manual_record</mat-icon>
+        <span>En cours</span>
+      </p>
+      <h1 class="text-black card-heading mt-0 mb-0">
+      {{caiss.mois}}
+      </h1>
+            <p class="mb-0 mt-0">
+       <strong>Prix unit : </strong> {{caiss.prixUnit}}<strong> mad</strong>
+      </p>
+      <p class="mb-0 mt-0">
+       <strong>Rest : </strong> {{caiss.rest}}<strong> mad</strong>
+      </p>
+    </div> 
+    <div fxLayoutAlign="end"
+    style="margin-right: 1rem;"
+      class="text-uppercase d-inline-block font-weight-medium lts-2px mb-1 text-center styled-link " >
+      <button *ngIf="caiss.status===0" [disabled]="caiss.status===0"  mat-button >
+        <span style="color: #e85858;" >closed</span>
+      </button>
+      <button *ngIf="caiss.status===1" mat-button (click)="modifyCaisse(caiss)" >
+        modify
+      </button>
+    </div>
+   
+   
+  </div>
+
+</div>
+</div>

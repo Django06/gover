@@ -1,0 +1,13 @@
+<div class="app-container">
+  <app-app-bar></app-app-bar>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav" opened="true" #snav mode="side">
+        <img class="admin-picture" src="assets/logo.png" />
+        <app-navigation-bar></app-navigation-bar>
+    </mat-sidenav>
+    <mat-sidenav-content
+      class="sidenav-content mat-elevation-z8">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

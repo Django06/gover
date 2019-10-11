@@ -1,0 +1,139 @@
+<!-- <div mat-dialog-title fxLayout="row" fxLayoutAlign="start start">
+ <span>Modify caisse</span> 
+ <span fxFlex></span>
+    <span
+      style=" font-weight:400"
+      class="small font-weight-medium text-uppercase text-muted lts-2px">
+      <span style="color:#abd466">En cours</span>
+      </span>
+</div>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Montant</mat-label>
+      <input appNumberOnly numericType="decimal" class="montant" type="text" matInput formControlName="prixUnit" />
+      <span matSuffix style="font-weight: 800;">MAD</span>
+      <mat-error *ngIf="!!form.controls.prixUnit.errors?.required">required</mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Mois</mat-label>
+      <input class="montant" type="text" matInput formControlName="mois" />
+      <mat-error *ngIf="!!form.controls.mois.errors?.required">required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button color="primary" (click)="addCaisse()">modify</button>
+</div>
+
+ -->
+
+<!-- testos -->
+<h1 mat-dialog-title>
+  <span *ngIf="!regSnav.opened">Modify caisse</span>
+  <span *ngIf="regSnav.opened">colturer caisse</span>
+  <span fxFlex></span>
+  <span
+    *ngIf="!regSnav.opened"
+    style=" font-weight:400"
+    class="small font-weight-medium text-uppercase text-muted lts-2px"
+  >
+    <span style="color:#abd466">En cours</span>
+  </span>
+</h1>
+
+<div mat-dialog-content>
+  <div fxLayout="column" fxLayoutAlign="center center">
+      <mat-sidenav-container>
+        <mat-sidenav class="w-100" mode="push" #regSnav position="end">
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <form [formGroup]="form" fxLayout="column">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Montant </mat-label>
+                <input
+                  appNumberOnly
+                  numericType="decimal"
+                  class="montant"
+                  type="text"
+                  matInput
+                  formControlName="price"
+                />
+                <span matSuffix style="font-weight: 800;">MAD</span>
+                <mat-error *ngIf="!!form.controls.prixUnit.errors?.required"
+                  >required</mat-error
+                >
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <form [formGroup]="form" fxLayout="column">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Montant</mat-label>
+                <input
+                  appNumberOnly
+                  numericType="decimal"
+                  class="montant"
+                  type="text"
+                  matInput
+                  formControlName="prixUnit"
+                />
+                <span matSuffix style="font-weight: 800;">MAD</span>
+                <mat-error *ngIf="!!form.controls.prixUnit.errors?.required"
+                  >required</mat-error
+                >
+              </mat-form-field>
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Mois</mat-label>
+                <input
+                  class="montant"
+                  type="text"
+                  matInput
+                  formControlName="mois"
+                />
+                <mat-error *ngIf="!!form.controls.mois.errors?.required"
+                  >required</mat-error
+                >
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button
+    mat-button
+    *ngIf="!regSnav.opened"
+    (click)="regSnav.open()"
+    style="background-color:#E9CD5A"
+  >
+    cloturer
+  </button>
+  <span fxFlex></span>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button (click)="regSnav.close()" *ngIf="regSnav.opened">
+    Retour
+  </button>
+  <button
+    mat-button
+    color="primary"
+    *ngIf="!regSnav.opened"
+    (click)="modifyCaisse()"
+  >
+    modify
+  </button>
+  <button
+    mat-button
+    color="primary"
+    *ngIf="regSnav.opened"
+    (click)="cloturerCaisse()"
+  >
+    cloturer
+  </button>
+</div>

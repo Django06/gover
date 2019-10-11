@@ -1,0 +1,200 @@
+<div>
+  <div
+    class=" bg-white shadow-1 "
+    style="height: 9rem;margin-bottom: 1rem; overflow: hidden; border-radius: 1px;"
+    fxLayout="column"
+  >
+    <div fxFlex="50" fxLayout="row" fxLayoutAlign="start center">
+      <p
+        style=" font-weight:400"
+        class="mt-1 ml-1 small font-weight-medium text-uppercase text-muted lts-2px">
+        <mat-icon style="color:#abd466;font-size:small " mat-list-icon>
+          fiber_manual_record</mat-icon>
+        <span>En cours</span>
+      </p>
+      <!-- <span>{{ caisseDetails.dateDebut | date }}</span> -->
+    </div>
+
+    <div class="ml-2" fxFlex="50" fxLayout="row">
+      <div fxFlex fxLayout="column">
+        <div fxFlex><span style="font-size: x-large; font-weight:bold ">Mois</span></div>
+        <div fxFlex style="text-align: center;">
+          <span
+            style="text-align: center;font-size: xx-large;font-weight: 300;">
+            {{ caisseDetails?.mois }}</span
+          >
+        </div>
+      </div>
+      <div  fxFlex fxLayout="column">
+        <div fxFlex><span style="font-size: x-large; font-weight:bold ">prix unit:</span></div>
+        <div fxFlex  style="text-align: center;">
+          <span
+            style="text-align: center;font-size: xx-large;font-weight: 300;">
+            {{ caisseDetails?.prixUnit }}
+          </span>
+        </div>
+      </div>
+      <div fxFlex fxLayout="column">
+        <div fxFlex><span style="font-size: x-large; font-weight:bold ">rest :</span></div>
+        <div fxFlex style="text-align: center;">
+          <span
+            style="text-align: center;font-size: xx-large;font-weight: 300;">
+            {{ caisseDetails?.rest }}</span
+          >
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div
+    fxLayoutAlign="start start"
+    class="fullCard"
+    fxLayout="row"
+    fxLayoutGap="20px"
+  >
+    <div
+      fxFlex="30"
+      class=" p-relative bg-white shadow-1 color-hover-caisse"
+      style="overflow: hidden; border-radius: 1px;"
+    >
+      <div class="px-1 py-1">
+        <h1 class="text-black card-heading mt-0 mb-1">
+          Add Ligne
+        </h1>
+      </div>
+      <div>
+        <form [formGroup]="form" fxLayout="column">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label><em>montant</em></mat-label>
+            <input
+            appNumberOnly
+            numericType="decimal"
+              matInput
+              formControlName="montant"
+              placeholder="ex: 150"
+              type="text"
+
+            />
+            <span matSuffix style="font-weight: 800;">MAD</span>
+            <mat-error *ngIf="!!form.controls.montant.errors?.required"
+              >required</mat-error
+            >
+          </mat-form-field>
+
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label><em>Motif</em></mat-label>
+            <input matInput formControlName="motif" type="text" />
+            <mat-error *ngIf="!!form.controls.motif.errors?.required"
+              >required</mat-error
+            >
+          </mat-form-field>
+
+          <button
+            style="background-color: #efd673;"
+            (click)="addJourney()"
+            mat-button
+            
+          >
+            <span style=" color:#2B2D42">Add</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div fxFlex="70" class="card-table" style="height: 65vh;overflow: auto;">
+      <mat-toolbar>
+        <mat-toolbar-row>
+          <span> Journey List:</span>
+          <span fxFlex></span>
+          <mat-paginator
+            class="primary"
+            [pageSize]="10"
+            [pageSizeOptions]="[10, 25, 50, 100]"
+            showFirstLastButtons
+          >
+          </mat-paginator>
+
+          <div class="button-row">
+            <button mat-icon-button color="primary" matTooltip="refresh">
+              <mat-icon>refresh</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" matTooltip="Filtrer">
+              <mat-icon>filter_list</mat-icon>
+            </button>
+          </div>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div fxLayout="column">
+        <table mat-table style="width: 100%;" [dataSource]="dataSource">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">{{element.idJourneeDetail}}</td>
+          </ng-container>
+          <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let element">{{element.name}}</td>
+          </ng-container>
+          <ng-container matColumnDef="montant">
+            <th mat-header-cell *matHeaderCellDef>Montant</th>
+            <td mat-cell *matCellDef="let element">{{element.prix}}</td>
+          </ng-container>
+          <ng-container matColumnDef="motif">
+            <th mat-header-cell *matHeaderCellDef>Motif</th>
+            <td mat-cell *matCellDef="let element">{{element.motif}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button
+                (click)="$event.stopPropagation()"
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+                color="primary"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editJourney(element)">
+                  <mat-icon>edit</mat-icon>
+                  Modify
+                </button>
+                <button
+                  (click)="$event.stopPropagation(); removeJourney(element)"
+                  mat-menu-item
+                >
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+          ></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="cursor-pointer"
+          ></tr>
+        </table>
+
+        <div class="pt-1" fxLayout="row" fxLayoutAlign="center center">
+          <ng-container *ngIf="!isLoading; else loadingTemplate">
+            <ng-container *ngIf="error; else emptyTemplate">
+              <mat-error>{{ error }}</mat-error>
+            </ng-container>
+            <ng-template #emptyTemplate>
+              <p *ngIf="dataSource?.length == 0">no journey yet .</p>
+            </ng-template>
+          </ng-container>
+          <ng-template #loadingTemplate>
+            <mat-spinner mode="indeterminate" [diameter]="32"> </mat-spinner>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

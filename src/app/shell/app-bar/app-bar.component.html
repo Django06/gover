@@ -1,0 +1,38 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="center center" style="background-color: #2b2d42; height: 70px;">
+    <span fxFlex></span>
+    <div class="button-row" fxLayoutAlign="start stretch">
+
+      <div fxlayout="row" fxLayoutAlign="start start">
+        <button mat-button [matMenuTriggerFor]="toolbarMenu">
+           <span>
+           <div fxLayout="row" fxLayoutAlign="center center">
+            <img class="admin-picture" src="assets/FakeDP.jpeg">
+            <span style="color: #edf2f4" > {{currentUser}}</span>
+            <mat-icon style="color: #edf2f4">arrow_drop_down</mat-icon>
+           </div>
+           </span>
+           </button>
+           <mat-menu #toolbarMenu="matMenu" >
+             <button mat-menu-item>
+                 <mat-icon>notifications</mat-icon>
+                 Notifications
+               </button>
+             <button mat-menu-item>
+               <mat-icon>bar_chart</mat-icon>
+               Statistiques
+             </button>
+            
+               <button mat-menu-item>
+                 <mat-icon>account_circle</mat-icon>
+                 Profile
+               </button>
+               <mat-divider class="style-fix" [vertical]="false"></mat-divider>
+             <button (click)="logout()" mat-menu-item >
+               <mat-icon>exit_to_app</mat-icon>
+               LogOut
+             </button>
+           </mat-menu>
+      </div>
+ 
+    </div>
+  </mat-toolbar>
