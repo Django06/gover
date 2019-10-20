@@ -7,6 +7,7 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { UsersUpdate } from '../models/users-update';
 @Injectable({
   providedIn: 'root',
 })
@@ -134,22 +135,16 @@ class UsersService extends __BaseService {
   /**
    * @param params The `UsersService.UpdateUserParams` containing the following parameters:
    *
+   * - `users`:
+   *
    * - `idUser`:
-   *
-   * - `Pass`:
-   *
-   * - `Name`:
-   *
-   * - `Login`:
    */
   UpdateUserResponse(params: UsersService.UpdateUserParams): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    __body = params.users;
     if (params.idUser != null) __params = __params.set('idUser', params.idUser.toString());
-    if (params.Pass != null) __params = __params.set('Pass', params.Pass.toString());
-    if (params.Name != null) __params = __params.set('Name', params.Name.toString());
-    if (params.Login != null) __params = __params.set('Login', params.Login.toString());
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/Users/UpdateUser`,
@@ -170,13 +165,9 @@ class UsersService extends __BaseService {
   /**
    * @param params The `UsersService.UpdateUserParams` containing the following parameters:
    *
+   * - `users`:
+   *
    * - `idUser`:
-   *
-   * - `Pass`:
-   *
-   * - `Name`:
-   *
-   * - `Login`:
    */
   UpdateUser(params: UsersService.UpdateUserParams): __Observable<null> {
     return this.UpdateUserResponse(params).pipe(
@@ -234,10 +225,8 @@ module UsersService {
    * Parameters for UpdateUser
    */
   export interface UpdateUserParams {
+    users?: UsersUpdate;
     idUser?: number;
-    Pass?: string;
-    Name?: string;
-    Login?: string;
   }
 }
 

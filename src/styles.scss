@@ -26,12 +26,16 @@ body {
 }
 
 .success-snackbar {
-  background: #0fb638;
-  color: #fff
+  background: #20bb8c;
+  span{
+color:#2b2d42
+  }
 }
 .danger-snackbar {
-  background: #b60f0f;
-  color: #fff
+  background: #bb2059;
+  span{
+    color:#fff
+      }
 }
 
 // General padding and margin

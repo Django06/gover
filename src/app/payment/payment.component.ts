@@ -2,6 +2,8 @@ import { JourneeDetailService, CaisseService } from "src/app/api/services";
 import { Component, OnInit } from "@angular/core";
 import { UsersService } from "../api/services";
 import { SelectionModel } from "@angular/cdk/collections";
+import { MatSnackBar, MatDialog } from '@angular/material';
+import * as appHelpers from '../core/_helpers/app.helper';
 
 @Component({
   selector: "app-payment",
@@ -19,92 +21,121 @@ export class PaymentComponent implements OnInit {
     "motif",
     "status"
   ];
-  selection = new SelectionModel<any>(true, []);
+  initialSelection = [];
+  selection = new SelectionModel<any>(true, this.initialSelection);
   caisseInfo:any = [];
   isSelected = false;
   total = 0;
   listIdJournee:any = [];
+  currentSelectedUser :any;
+  error:string;
+  isLoading:boolean=false;
+
 
   constructor(
     private usersService: UsersService,
     private journeeDetail: JourneeDetailService,
-    private caisse: CaisseService
+    private caisse: CaisseService,
+    public _snackBar: MatSnackBar,
+    private dialog: MatDialog,
+
   ) {}
 
   ngOnInit() {
-    this.usersService.GetAllUsers().subscribe((res:any) => {
-
-      this.users = res.map(m => ({...m,stat:false})); 
-      console.log("users", res);
-      console.log("users2", this.users);
-    });
-
+    this.getUsers();
     this.caisse.GetCaisseEnCours().subscribe(res => {
       this.caisseInfo = res;
-      console.log("caisseInfo",res);
-
     })
   }
+  getUsers(){
+    this.usersService.GetAllUsers().subscribe((res:any) => {
+      this.users = res.map(m => ({...m,stat:false}));
+    });
+  }
+  getUserSelected(user){
+  this.currentSelectedUser=user;
+  this.getJourneeDetail();
+  this.selection.clear();
 
-  getJourneeDetail(user) {
-    console.log("user", user);
+  }
+  getJourneeDetail() {
     this.isSelected = true;
+    this.isLoading=true;
     this.journeeDetail
-      .GetJourneeDetailsImpaye({ idUser: user.idUser })
+      .GetJourneeDetailsImpaye({ idUser: this.currentSelectedUser.idUser })
       .subscribe((res: any) => {
         this.dataSource = res.data;
-        console.log("click journee", res.data);
+        this.isLoading=false;
       });
       this.users.map(e=> {
-        if(e.idUser!=user.idUser){
+        if(e.idUser!=this.currentSelectedUser.idUser){
           e.stat=false;
-        }
+                }
         else{
           e.stat=true;
         }
       })
-      console.log("testos",this.users);
-      
-      // this.users.stat = false;
-      // user.stat = true;
-      console.log("stat", user);
-      
   }
   sendValidation(){
-    this.listIdJournee = this.selection.selected.map(m =>m.idJourneeDetail);
-this.journeeDetail.ChangeStatueJourneeDetail(this.listIdJournee).subscribe(res => {
-  res => console.log("apre pay ", res);
-  
-});
-console.log("log3", this.listIdJournee);
 
-  }
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
+    appHelpers
+    .confirmDialog(
+      this.dialog,
+      'please confime this payment',
+      '',
+      'Yes',
+      'CANCEL'
+    )
+    .subscribe(value => {
+      if (value) {
+        this.listIdJournee = this.selection.selected.map(m =>m.idJourneeDetail);
+        this.journeeDetail.ChangeStatueJourneeDetail(this.listIdJournee).subscribe(res => {
+        if(res){
+          this._snackBar.open("Paid successfely", "x", {
+            duration: 3000,
+            panelClass: ["success-snackbar"]});
+            this.usersService.GetAllUsers().subscribe((res:any) => {
+              this.users = res.map(m => ({...m,stat:false}));
+              this.getUserSelected(this.currentSelectedUser);
+
+            });
+      }
+    });
+    }
+},
+err=>{
+  this.error=err;
+  this._snackBar.open("Erreur", "x", {
+    duration: 3000,
+    panelClass: ["danger-snackbar"]
+  });
+});
+}
+
+
+
+   /** Whether the number of selected elements matches the total number of rows. */
+   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.length;
     return numSelected === numRows;
-   
-    
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.forEach(row => this.selection.select(row));
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: any): string {
     if (!row) {
-      return `${this.isAllSelected() ? "select" : "deselect"} all`;
-    }    
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
     this.total = this.selection.selected.map(m => m.prix).reduce((a, b) => a + b, 0);
-
-    return `${
-      this.selection.isSelected(row) ? "deselect" : "select"
-    } row ${row.position + 1}`;
-
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }
+
+

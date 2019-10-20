@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from "@angular/material";
-import { UsersService, JourneeDetailService } from "src/app/api/services";
+import { JourneeDetailService } from "src/app/api/services";
+import { ValidationService } from 'src/app/shared/services/validation.service';
 
 @Component({
   selector: "app-modify-journey",
@@ -10,6 +11,7 @@ import { UsersService, JourneeDetailService } from "src/app/api/services";
 })
 export class ModifyJourneyComponent implements OnInit {
   form: FormGroup;
+  isLoading:boolean;
   constructor(
     public dialogRef: MatDialogRef<ModifyJourneyComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -18,14 +20,12 @@ export class ModifyJourneyComponent implements OnInit {
     private journeyDetails: JourneeDetailService
   ) {
     this.form = fb.group({
-      montant: [this.data.row.prix, [Validators.required]],
-      motif: [this.data.row.motif, [Validators.required]]
+      montant: [this.data.row.prix],
+      motif: [this.data.row.motif]
     });
   }
 
-  ngOnInit() {
-    console.log("data", this.data.row);
-  }
+  ngOnInit() {}
   addJourney() {
     if (this.form.value) {
       this.journeyDetails

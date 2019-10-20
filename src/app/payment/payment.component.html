@@ -1,89 +1,60 @@
 <div fxLayout="column">
   <div fxLayout="row">
     <div fxFlex="75" fxLayout="row" fxLayoutAlign="start" style="overflow-x:auto" fxLayoutGap="10px">
-      <div *ngFor="let user of users" class="bg-white shadow-1 color-hover" (click)="getJourneeDetail(user)"
+      <div *ngFor="let user of users" class="bg-white shadow-1 color-hover" (click)="getUserSelected(user)"
       [ngClass]="{'isSelected' : user.stat}"
         style="width: 15vw; min-width: 15vw; overflow: hidden; border-radius: 1px;">
-        <img src="assets/FakeDP.jpeg" alt="Man with backpack" class="d-block w-full" />
+        <img *ngIf="user.image"  class="d-block w-full"  [src]="'data:image/png;base64,' + user.image">
+        <img *ngIf="!user.image"  class="d-block w-full"  src="assets/FakeDP.jpeg">
         <div class="px-1 py-1">
           <p style="margin: 0; font-weight:400"
             class="small font-weight-medium text-uppercase text-muted text-center lts-2px">
             {{ user.name }}
           </p>
-          <h1 class="text-black card-heading mt-0 mb-1">
-            {{ user.credit }}
-          </h1>
+          <h5 class="text-black text-center mt-1 mb-0">
+            Credit : <strong style="color: #2b2d42;
+            font-size: large;"> {{ user.credit }} </strong>
+          </h5>
         </div>
 
       </div>
     </div>
 
     <div fxFlex="25" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
-      <div class="bg-white shadow-1" style="width: 15vw;overflow: hidden; border-radius: 1px;">
-        <!-- <img src="assets/FakeDP.jpeg" alt="Man with backpack" class="d-block w-full" /> -->
+      <div class="bg-white shadow-1" style="width: 20vw;overflow: hidden; border-radius: 1px;">
         <div class="px-1 py-1">
-          <h2 class="text-black card-heading mt-0 mb-1">
-            Dashboard
-          </h2>
-          <h4>
+         <div fxLayout="column" fxLayoutAlign="center start">
+          <span style="font-size: xx-large; margin-bottom: 1rem;">
             Caisse : <strong>{{caisseInfo.prixUnit}}</strong>
-          </h4>
-          <h4>
-            All Credit : <strong>{{caisseInfo.totalToPay}}</strong>
-          </h4>
-        
+          </span>
+          <span style="font-size: xx-large;">
+            All Credit : <strong style="color: #eace60"> {{caisseInfo.totalToPay}}</strong>
+          </span>
+         </div>
+
         </div>
-        <div fxLayoutAlign="end" style="margin-right: 0.5rem;">
-            <strong class="float-left mx-auto">{{total}}</strong>
-          <button mat-flat-button color="primary" (click)="sendValidation()">
-            <span >
-                Pay
-            </span>
-            
-          </button>
-        </div>
+        <div fxLayout="column" fxLayoutAlign="center">
+          <div> <strong style="height: 20vh;font-size: 91px;" class="float-left mx-auto">{{total}}</strong></div>
+          <div>
+           <button style="background-color: #eace60;width: 100%;" mat-flat-button color="primary" (click)="sendValidation()">
+             <span>Pay</span>
+           </button>
+          </div>
+       </div>
       </div>
     </div>
   </div>
 
 
-  <div class=" p-relative  shadow-1 " style="overflow: hidden; border-radius: 1px; margin-top: 10px;">
+  <div *ngIf="dataSource?.length" class=" p-relative  shadow-1 " style="overflow: hidden; border-radius: 1px; margin-top: 10px;">
     <mat-card class="card-table example-card">
       <mat-card-content>
-        <!-- <mat-toolbar>
-          <mat-toolbar-row>
-            <span> Users List:</span>
-            <span fxFlex></span>
-            <mat-paginator class="primary" [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>
-            </mat-paginator>
-
-            <div class="button-row">
-              <button mat-icon-button color="primary" matTooltip="refresh">
-                <mat-icon>refresh</mat-icon>
-              </button>
-              <button mat-icon-button color="primary" matTooltip="Filtrer">
-                <mat-icon>filter_list</mat-icon>
-              </button>
-
-              <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #toolbarMenu="matMenu">
-                <button mat-menu-item>
-                  <mat-icon>add</mat-icon>
-                  Add user
-                </button>
-              </mat-menu>
-            </div>
-          </mat-toolbar-row>
-        </mat-toolbar> -->
-
-
-        <div fxLayout="column">
+        <div style="height: 37vh;overflow: auto;" fxLayout="column">
           <table mat-table style="width: 100%;" [dataSource]="dataSource">
             <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? masterToggle() : null"
+                <mat-checkbox
+                (change)="$event ? masterToggle() : null"
                   [checked]="selection.hasValue() && isAllSelected()"
                   [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                 </mat-checkbox>
@@ -152,11 +123,11 @@
 
           <div class="p-3" fxLayout="row" fxLayoutAlign="center center">
             <ng-container *ngIf="!isLoading; else loadingTemplate">
-              <!-- <ng-container *ngIf="error; else emptyTemplate">
+              <ng-container *ngIf="error; else emptyTemplate">
                 <mat-error>{{ error }}</mat-error>
-              </ng-container> -->
+              </ng-container>
               <ng-template #emptyTemplate>
-                <p *ngIf="dataSource?.length == 0">no user .</p>
+                <p *ngIf="dataSource?.length === 0">no user .</p>
               </ng-template>
             </ng-container>
             <ng-template #loadingTemplate>
@@ -166,5 +137,8 @@
         </div>
       </mat-card-content>
     </mat-card>
+  </div>
+  <div *ngIf="dataSource.length ===0" fxLayout="row" fxLayoutAlign="center center" style="height: 44vh;">
+ <i>chose a choice for more details...  </i>
   </div>
 </div>
