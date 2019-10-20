@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+  <div mat-dialog-content>
+    <div [innerHTML]="data.questionInHtml"></div>
+    <mat-form-field *ngIf="data.includesInput">
+    <input matInput [(ngModel)]="data.value">
+  </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close cdkFocusInitial>{{data.noText}}</button>
+    <button mat-button color="primary" [mat-dialog-close]="true">{{data.yesText}}</button>
+  </div>

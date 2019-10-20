@@ -17,6 +17,9 @@ import {
   switchMap
 } from "rxjs/operators";
 import { AuthentificationService } from "../core/_services/authentification.service";
+import * as appHelpers from '../core/_helpers/app.helper';
+import { UpdateUserComponent } from './dialogs/update-user/update-user.component';
+
 
 @Component({
   selector: "app-user-manager",
@@ -25,7 +28,7 @@ import { AuthentificationService } from "../core/_services/authentification.serv
 })
 export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
-  displayedColumns: string[] = ["id", "name", "login", "actions"];
+  displayedColumns: string[] = [ 'imgBytes', "name", "login", "actions"];
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
   dataSource = [];
@@ -34,6 +37,7 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   criteria: any = {};
   search$ = new Subject<void>();
   currentUser;
+  image: any;
   constructor(
     private dialog: MatDialog,
     private userService: UsersService,
@@ -41,6 +45,9 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
     public _snackBar: MatSnackBar
   ) {
     this.currentUser = this.AuthService.currentUser.nameUser;
+    this.userService.GetUserById(this.AuthService.currentUser.IdUser).subscribe((res:any)=>{
+      this.image=res.image;
+      })
   }
 
   ngAfterViewInit(): void {}
@@ -82,16 +89,38 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
   }
-  editUser() {}
-  removeUser(user) {
-    console.log(user);
-    
-    this.userService.DeleteUser(user.idUser).subscribe(res => {
-      this.search$.next();
-      this._snackBar.open("user deleted successfely", "x", {
-        duration: 3000,
-        panelClass: ["success-snackbar"]
+  editUser(user) {
+    this.dialog
+      .open(UpdateUserComponent, {
+        width: "35vw",
+        data:{user:user}
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.search$.next();
+        }
       });
-    });
+  }
+  removeUser(user) {
+    appHelpers
+    .confirmDialog(
+      this.dialog,
+      'Do you really want to delete this user ?',
+      '',
+      'Yes',
+      'CANCEL'
+    )
+    .subscribe(value => {
+      if (value) {
+        this.userService.DeleteUser(user.idUser).subscribe(res => {
+          this.search$.next();
+          this._snackBar.open("user deleted successfely", "x", {
+            duration: 3000,
+            panelClass: ["success-snackbar"]
+          });
+        });
+      }
+    });    
   }
 }

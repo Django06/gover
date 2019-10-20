@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject } from "rxjs";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from "rxjs/operators";
-import { AUTHService } from 'src/app/api/services';
+import { AUTHService, UsersService } from 'src/app/api/services';
 import { User } from './user';
 
 export const AUTH_TOKEN_KEY = "UAT";
@@ -12,6 +12,7 @@ export const AUTH_TOKEN_KEY = "UAT";
 export class AuthentificationService {
   private _isAuthenticated = new BehaviorSubject<boolean>(false);
   private _currentUser: User;
+  _infoUser: any;
 
   public get isAuthenticated(): boolean {
     return this._isAuthenticated.getValue();
@@ -28,14 +29,19 @@ export class AuthentificationService {
   public get currentUser(): User {
     return this._currentUser;
   }
+  public get infoUser(): User {
+    return this._infoUser;
+  }
   constructor(
     private jwtHelperService: JwtHelperService,
-    private authService: AUTHService
+    private authService: AUTHService,
+    private userService:UsersService
   ) {
     const user = this.getDecodedTokenFromStorage();
     if (user) {
       this._currentUser = user;
-      this.setIsAuthenticated(true);
+      this.setIsAuthenticated(true);      
+      this.getUserInfo(this._currentUser.IdUser);
     }
   }
 
@@ -58,7 +64,12 @@ export class AuthentificationService {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     setTimeout(() => location.reload(), 250);
   }
+getUserInfo(user){
+  this.userService.GetUserById(user).subscribe(res=>{
+  this._infoUser=res;
 
+  })
+}
   getDecodedTokenFromStorage(): any | null {
     let decodedToken: any;
     try {

@@ -40,7 +40,7 @@ const JWT_Module_Options: JwtModuleOptions = {
      // JwtHelper
      JwtModule.forRoot(JWT_Module_Options),
      //api 
-     ApiModule.forRoot({ rootUrl: 'http://192.168.1.16:3000' }),
+     ApiModule.forRoot({ rootUrl: 'http://192.168.1.16:5500' }),
   ],
   exports: [SharedModule, FormsModule, ReactiveFormsModule],
   providers: [{

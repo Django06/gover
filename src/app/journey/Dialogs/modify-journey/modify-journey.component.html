@@ -3,35 +3,37 @@
 <div mat-dialog-content>
   <form [formGroup]="form" fxLayout="column">
    <div>
-    <div style="margin-bottom: 5px">
-        <span style="font-size: large;">User:</span>
+    <div fxLayoutAlign="center center" style="margin-bottom: 1rem">
+        <span style="font-size: large;">username :</span>
           <span
-            style="text-align: center;font-size: large;font-weight: 300;color: #d9b219">
-            {{ data.row.name }}</span>
+            style="text-align: center;
+            font-size: larger;
+            font-weight: bold;
+            color: #d9b219;
+            margin-left: 1rem;">
+            {{ data.row.name  |uppercase }}</span>
     
       </div>
    </div>
     <mat-form-field class="w-100" appearance="outline">
-      <mat-label><em>Montant</em></mat-label>
+      <mat-label><em>Amount</em></mat-label>
       <input
       appNumberOnly
       numericType="decimal"
         matInput
         formControlName="montant"
-        type="number"
-      />
-      <mat-error *ngIf="!!form.controls.montant.errors?.required">required</mat-error>
+        type="number"/>
     </mat-form-field>
+
 
     <mat-form-field class="w-100" appearance="outline">
       <mat-label><em>Motif</em></mat-label>
       <input
         matInput
         formControlName="motif"
-        type="text"
-      />
-      <mat-error *ngIf="!!form.controls.motif.errors?.required">required</mat-error>
+        type="text"/>
     </mat-form-field>
+
 
   </form>
 </div>

@@ -15,6 +15,8 @@ class JourneeDetailService extends __BaseService {
   static readonly AddJourneeDetailPath = '/api/JourneeDetail/AddJourneeDetail';
   static readonly DeleteJourneeDetailPath = '/api/JourneeDetail/DeleteJourneeDetail';
   static readonly UpdateJourneeDetailPath = '/api/JourneeDetail/UpdateJourneeDetail';
+  static readonly ChangeStatueJourneeDetailPath = '/api/JourneeDetail/ChangeStatueJourneeDetail';
+  static readonly GetJourneeDetailsImpayePath = '/api/JourneeDetail/GetJourneeDetailsImpaye';
 
   constructor(
     config: __Configuration,
@@ -172,6 +174,88 @@ class JourneeDetailService extends __BaseService {
       __map(_r => _r.body as null)
     );
   }
+
+  /**
+   * @param idJourneeDetail undefined
+   */
+  ChangeStatueJourneeDetailResponse(idJourneeDetail?: Array<number>): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = idJourneeDetail;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/JourneeDetail/ChangeStatueJourneeDetail`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param idJourneeDetail undefined
+   */
+  ChangeStatueJourneeDetail(idJourneeDetail?: Array<number>): __Observable<null> {
+    return this.ChangeStatueJourneeDetailResponse(idJourneeDetail).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param params The `JourneeDetailService.GetJourneeDetailsImpayeParams` containing the following parameters:
+   *
+   * - `start`:
+   *
+   * - `idUser`:
+   *
+   * - `count`:
+   */
+  GetJourneeDetailsImpayeResponse(params: JourneeDetailService.GetJourneeDetailsImpayeParams): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.start != null) __params = __params.set('start', params.start.toString());
+    if (params.idUser != null) __params = __params.set('idUser', params.idUser.toString());
+    if (params.count != null) __params = __params.set('count', params.count.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/JourneeDetail/GetJourneeDetailsImpaye`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param params The `JourneeDetailService.GetJourneeDetailsImpayeParams` containing the following parameters:
+   *
+   * - `start`:
+   *
+   * - `idUser`:
+   *
+   * - `count`:
+   */
+  GetJourneeDetailsImpaye(params: JourneeDetailService.GetJourneeDetailsImpayeParams): __Observable<null> {
+    return this.GetJourneeDetailsImpayeResponse(params).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
 }
 
 module JourneeDetailService {
@@ -191,6 +275,15 @@ module JourneeDetailService {
     codeJourneeDetail?: number;
     Prix?: number;
     Motif?: string;
+  }
+
+  /**
+   * Parameters for GetJourneeDetailsImpaye
+   */
+  export interface GetJourneeDetailsImpayeParams {
+    start?: number;
+    idUser?: number;
+    count?: number;
   }
 }
 
