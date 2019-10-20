@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Add user</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+      <div fxFill fxLayout="row" fxLayoutAlign="center start">
+          <button  type="button"  mat-icon-button
+            matTooltip="Add picture" md-button (click)="imgFileInput.click()">
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+          <picture *ngIf="!ImagePers" >
+            <img style="border-radius: 50%" width="100px" height="100px" class="custom-avatar"
+              src="assets/FakeDP.jpeg" />
+          </picture>
+          <picture *ngIf="ImagePers" >
+            <img style="border-radius: 50%" width="100px" height="100px" class="custom-avatar"
+            [src]="ImagePers"/>
+          </picture>
+          <input hidden type="file" name="file" accept="image/*" #imgFileInput
+            (change)="ChargerPhoto($event)" />
+        </div> 
+   
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label><em>name</em></mat-label>
+      <input
+        matInput
+        formControlName="name"
+        placeholder="ex: ahmed"
+        type="text"
+      />
+
+      <mat-error *ngIf="!!form.controls.name.errors?.required">required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label><em>password</em></mat-label>
+      <input matInput formControlName="pass" type="password" />
+      <mat-error *ngIf="!!form.controls.pass.errors?.required">required</mat-error
+      >
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button color="primary" (click)="updateUser()">Add</button>
+</div>

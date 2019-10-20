@@ -6,9 +6,16 @@
   <div fxFlex="30" class=" mx-auto p-relative bg-white shadow-1 color-hover" 
   style="width: 360px; overflow: hidden; border-radius: 1px;">
     <img
-      src="assets/FakeDP.jpeg"
+    *ngIf="image"
+    [src]="'data:image/png;base64,' + image"
       alt="Man with backpack"
       class="d-block w-full"/>
+    <img
+    *ngIf="!image"
+    src="assets/FakeDP.jpeg"
+      alt="Man with backpack"
+      class="d-block w-full"/>
+
     <div class="px-1 py-1">
       <p style="margin: 0; font-weight:400" class="small font-weight-medium text-uppercase text-muted lts-2px" >
         Admin
@@ -66,10 +73,11 @@
         </mat-toolbar>
         <div fxLayout="column">
           <table mat-table style="width: 100%;" [dataSource]="dataSource">
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef>#</th>
+            <ng-container matColumnDef="imgBytes">
+              <th mat-header-cell *matHeaderCellDef> image </th>
               <td mat-cell *matCellDef="let element">
-                {{element?.idUser}}
+                <img *ngIf="element.image"  class="imageHeader" [src]="'data:image/png;base64,' + element.image">
+                <img *ngIf="!element.image"  class="imageHeader" src="assets/FakeDP.jpeg">
               </td>
             </ng-container>
             <ng-container matColumnDef="name">
@@ -97,7 +105,7 @@
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="editUser()">
+                  <button mat-menu-item (click)="editUser(element)">
                     <mat-icon>edit</mat-icon>
                     Modify
                   </button>

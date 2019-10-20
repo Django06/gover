@@ -3,9 +3,11 @@ import { CommonModule } from "@angular/common";
 import { MaterialModule } from "./material.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { ChartsModule } from 'ng2-charts';
-import { HttpClientModule } from '@angular/common/http';
-import { NumberOnlyDirective } from './_directives/number-only.directive';
+import { ChartsModule } from "ng2-charts";
+import { HttpClientModule } from "@angular/common/http";
+import { NumberOnlyDirective } from "./_directives/number-only.directive";
+import { MessageControlComponent } from "./services/message-control/message-control.component";
+import { ConfirmationDialogComponent } from "./_dialogs/confirmation-dialog/confirmation-dialog.component";
 @NgModule({
   imports: [
     CommonModule,
@@ -14,11 +16,25 @@ import { NumberOnlyDirective } from './_directives/number-only.directive';
     FormsModule,
     ReactiveFormsModule,
     ChartsModule,
-    HttpClientModule,
+    HttpClientModule
     //directives
-    
+
+    //dialogs
   ],
-  declarations: [NumberOnlyDirective],
-  exports: [MaterialModule, FlexLayoutModule, FormsModule, ReactiveFormsModule,NumberOnlyDirective]
+  declarations: [
+    NumberOnlyDirective,
+    MessageControlComponent,
+    ConfirmationDialogComponent
+  ],
+  exports: [
+    MaterialModule,
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NumberOnlyDirective,
+    MessageControlComponent,
+    ConfirmationDialogComponent
+  ],
+  entryComponents: [ConfirmationDialogComponent]
 })
 export class SharedModule {}

@@ -6,7 +6,8 @@
         <button mat-button [matMenuTriggerFor]="toolbarMenu">
            <span>
            <div fxLayout="row" fxLayoutAlign="center center">
-            <img class="admin-picture" src="assets/FakeDP.jpeg">
+              <img *ngIf="image" class="admin-picture" [src]="'data:image/png;base64,' + image">
+                <img *ngIf="!image" class="admin-picture" src="assets/FakeDP.jpeg">
             <span style="color: #edf2f4" > {{currentUser}}</span>
             <mat-icon style="color: #edf2f4">arrow_drop_down</mat-icon>
            </div>

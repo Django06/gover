@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { Subject, merge, Observable } from 'rxjs';
+import { Subject, merge, Observable, of } from 'rxjs';
 import { MatPaginator } from '@angular/material';
-import { startWith, takeUntil, tap, switchMap } from 'rxjs/operators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { startWith, takeUntil, tap, switchMap, catchError } from 'rxjs/operators';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
 import { JourneeService, GlobalService } from '../api/services';
+import { ValidationService } from '../shared/services/validation.service';
 
 @Component({
   selector: 'app-history',
@@ -12,10 +13,10 @@ import { JourneeService, GlobalService } from '../api/services';
 })
 export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
-  displayedColumns: string[] = ["id","name","date", "montant", "motif"];
+  displayedColumns: string[] = ["id","name","date", "montant", "motif", "status"];
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
-  dataSource = [];
+  dataSource = { data: [], count: 0 };;
   isLoading: boolean;
   error: string;
   criteria: any = {};
@@ -37,41 +38,53 @@ export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getHistory();
     this.globalService.GetAllUser().subscribe(res=>{
       this.users$ =res;
     })
   }
-  getHistory() {
-    merge(this.search$)
-      .pipe(
-        startWith([]),
-        takeUntil(this.unsubscribe$),
-        tap(() => {
-          this.isLoading = true;
-          this.error = undefined;
-        }),
-        switchMap(() => this.JourneeService.GetAllJournee({criteria:this.criteria}) )
+
+  ngAfterViewInit(): void {
+    merge(this.paginator.page, this.search$)
+    .pipe(
+      startWith([{ pageIndex: 0, pageSize: 10 }, {}]),
+      takeUntil(this.unsubscribe$),
+      tap(() => {
+        this.isLoading = true;
+        this.error = undefined;
+        this.dataSource = { ...this.dataSource,data:[] };
+      }),
+      switchMap(() =>
+      this.JourneeService.GetAllJournee({criteria:this.criteria})
+          .pipe(
+            catchError(err => {
+              this.isLoading = false;
+              this.error = err;
+              return of(this.dataSource);
+            })
+          )
       )
-      .subscribe((res: any) => {
-        console.log(res);
-        
-        this.isLoading = false;
-        this.dataSource = res.data;
-      });
+    )
+    .subscribe((res: any) => {
+      this.isLoading = false;
+      this.dataSource.data = res.data;
+      this.dataSource.count = res.count;
+    });
+  }
+
+  getHistory() {
+   this.search$.next();
   }
   filter(){
     this.criteria ={
-      name:this.form.controls.user.value ,
-  prixMin: this.form.controls.priceMin.value ,
-  prixMax: this.form.controls.priceMax.value ,
-  date: this.form.controls.date.value 
+        name:this.form.controls.user.value ,
+        prixMin: this.form.controls.priceMin.value ,
+        prixMax: this.form.controls.priceMax.value ,
+        date: this.form.controls.date.value 
     }
-    console.log(this.criteria);
     
     this.search$.next();
   }
-  ngAfterViewInit(): void {}
+  
   ngOnDestroy(): void {
     this.search$.complete();
     this.unsubscribe$.next();
