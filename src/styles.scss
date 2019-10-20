@@ -22,7 +22,7 @@ body {
 .mat-menu-item.cdk-program-focused:not([disabled]),
 .mat-menu-item:hover:not([disabled]) {
   background: #efd673;
-  
+
 }
 
 .success-snackbar {
@@ -241,7 +241,7 @@ body {
   text-decoration: none;
   outline: none;
   color: #efd673;
-  transition: all 0.25s ease-in; 
+  transition: all 0.25s ease-in;
 }
 .styled-link:hover,
 .styled-link:focus,
@@ -260,6 +260,11 @@ body {
   border: none;
   border-bottom: 5px solid #efd673;
 }
+.isSelected {
+  transform: translateY(-5px);
+  border: none;
+  border-bottom: 5px solid #efd673;
+}
 
 
 .clearfix::before,
@@ -273,4 +278,29 @@ body {
 }
 .float-right{
   float: right;
+}
+
+
+
+.badge {
+  display: inline-block;
+  padding: .5em .5em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.badge-sucess{
+  background: #2096F3;
+  color:white;
+
+
+}
+.badge-danger{
+  background: #F44336;
+  color:white
 }

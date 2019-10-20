@@ -3,18 +3,18 @@
   class="fullCard"
   fxLayout="row"
   fxLayoutGap="10px" >
-  <div fxFlex="30" class=" mx-auto p-relative bg-white shadow-1 color-hover" 
+  <div fxFlex="30" class=" mx-auto p-relative bg-white shadow-1 color-hover"
   style="width: 360px; overflow: hidden; border-radius: 1px;">
-    <img
-      src="assets/FakeDP.jpeg"
+    <!-- <img
+      [src]="imageUser"
       alt="Man with backpack"
-      class="d-block w-full"/>
+      class="d-block w-full"/> -->
     <div class="px-1 py-1">
       <p style="margin: 0; font-weight:400" class="small font-weight-medium text-uppercase text-muted lts-2px" >
         Admin
       </p>
       <h1 class="text-black card-heading mt-0 mb-1">
-        {{currentUser}} 
+        {{currentUser.nameUser}}
       </h1>
     </div>
     <div fxLayoutAlign="end"
@@ -24,8 +24,8 @@
         modify
       </button>
     </div>
-   
-   
+
+
   </div>
   <div
     fxFlex="70"
@@ -59,7 +59,7 @@
                     </button>
                 </mat-menu>
 
-         
+
 
             </div>
           </mat-toolbar-row>
@@ -105,7 +105,7 @@
                     <mat-icon>delete</mat-icon>
                     <span>Delete</span>
                   </button>
-                 
+
                 </mat-menu>
               </td>
             </ng-container>

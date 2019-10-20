@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   version: 1.0,
-  serverUrl: 'http://192.168.1.16:3000',
+  serverUrl: 'http://localhost:3000',
   // whitelistedDomains: [
   // '192.168.1.14',
   // 'localhost:3000'

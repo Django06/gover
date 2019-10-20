@@ -12,7 +12,7 @@ import { JourneeService, GlobalService } from '../api/services';
 })
 export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
-  displayedColumns: string[] = ["id","name","date", "montant", "motif"];
+  displayedColumns: string[] = ['id', 'name', 'date', 'montant', 'motif', 'status'];
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
   dataSource = [];
@@ -25,8 +25,7 @@ export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
   form: FormGroup;
 
 
-  constructor(fb: FormBuilder, private JourneeService:JourneeService,private globalService: GlobalService) 
-  { 
+  constructor(fb: FormBuilder, private journeeService: JourneeService, private globalService: GlobalService) {
     this.form = fb.group({
       user: [''],
       date: [''],
@@ -38,9 +37,9 @@ export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.getHistory();
-    this.globalService.GetAllUser().subscribe(res=>{
-      this.users$ =res;
-    })
+    this.globalService.GetAllUser().subscribe(res => {
+      this.users$ = res;
+    });
   }
   getHistory() {
     merge(this.search$)
@@ -51,24 +50,24 @@ export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isLoading = true;
           this.error = undefined;
         }),
-        switchMap(() => this.JourneeService.GetAllJournee({criteria:this.criteria}) )
+        switchMap(() => this.journeeService.GetAllJournee({criteria: this.criteria}) )
       )
       .subscribe((res: any) => {
         console.log(res);
-        
+
         this.isLoading = false;
         this.dataSource = res.data;
       });
   }
-  filter(){
-    this.criteria ={
-      name:this.form.controls.user.value ,
+  filter() {
+    this.criteria = {
+      name: this.form.controls.user.value ,
   prixMin: this.form.controls.priceMin.value ,
   prixMax: this.form.controls.priceMax.value ,
-  date: this.form.controls.date.value 
-    }
+  date: this.form.controls.date.value
+    };
     console.log(this.criteria);
-    
+
     this.search$.next();
   }
   ngAfterViewInit(): void {}

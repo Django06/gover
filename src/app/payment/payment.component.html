@@ -1,2 +1,170 @@
-<h1>payment works!</h1>
- <h2>testos</h2>
+<div fxLayout="column">
+  <div fxLayout="row">
+    <div fxFlex="75" fxLayout="row" fxLayoutAlign="start" style="overflow-x:auto" fxLayoutGap="10px">
+      <div *ngFor="let user of users" class="bg-white shadow-1 color-hover" (click)="getJourneeDetail(user)"
+      [ngClass]="{'isSelected' : user.stat}"
+        style="width: 15vw; min-width: 15vw; overflow: hidden; border-radius: 1px;">
+        <img src="assets/FakeDP.jpeg" alt="Man with backpack" class="d-block w-full" />
+        <div class="px-1 py-1">
+          <p style="margin: 0; font-weight:400"
+            class="small font-weight-medium text-uppercase text-muted text-center lts-2px">
+            {{ user.name }}
+          </p>
+          <h1 class="text-black card-heading mt-0 mb-1">
+            {{ user.credit }}
+          </h1>
+        </div>
+
+      </div>
+    </div>
+
+    <div fxFlex="25" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+      <div class="bg-white shadow-1" style="width: 15vw;overflow: hidden; border-radius: 1px;">
+        <!-- <img src="assets/FakeDP.jpeg" alt="Man with backpack" class="d-block w-full" /> -->
+        <div class="px-1 py-1">
+          <h2 class="text-black card-heading mt-0 mb-1">
+            Dashboard
+          </h2>
+          <h4>
+            Caisse : <strong>{{caisseInfo.prixUnit}}</strong>
+          </h4>
+          <h4>
+            All Credit : <strong>{{caisseInfo.totalToPay}}</strong>
+          </h4>
+        
+        </div>
+        <div fxLayoutAlign="end" style="margin-right: 0.5rem;">
+            <strong class="float-left mx-auto">{{total}}</strong>
+          <button mat-flat-button color="primary" (click)="sendValidation()">
+            <span >
+                Pay
+            </span>
+            
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class=" p-relative  shadow-1 " style="overflow: hidden; border-radius: 1px; margin-top: 10px;">
+    <mat-card class="card-table example-card">
+      <mat-card-content>
+        <!-- <mat-toolbar>
+          <mat-toolbar-row>
+            <span> Users List:</span>
+            <span fxFlex></span>
+            <mat-paginator class="primary" [pageSize]="10" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>
+            </mat-paginator>
+
+            <div class="button-row">
+              <button mat-icon-button color="primary" matTooltip="refresh">
+                <mat-icon>refresh</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" matTooltip="Filtrer">
+                <mat-icon>filter_list</mat-icon>
+              </button>
+
+              <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #toolbarMenu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon>add</mat-icon>
+                  Add user
+                </button>
+              </mat-menu>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar> -->
+
+
+        <div fxLayout="column">
+          <table mat-table style="width: 100%;" [dataSource]="dataSource">
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                  [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.date | date: 'dd/MM/yyyy' }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="montant">
+              <th mat-header-cell *matHeaderCellDef>Montant</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.prix }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="motif">
+              <th mat-header-cell *matHeaderCellDef>Motif</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element?.motif }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element?.status===1" class="badge badge-sucess">PAID</span>
+                <span *ngIf="element?.status===0" class="badge badge-danger">UNPAID</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let element">
+                <button (click)="$event.stopPropagation()" mat-icon-button [matMenuTriggerFor]="menu" color="primary">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item>
+                    <mat-icon>edit</mat-icon>
+                    Modify
+                  </button>
+                  <button (click)="$event.stopPropagation()" mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                  </button>
+                </mat-menu>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+
+            <tr mat-row *matRowDef="let row; columns: displayedColumns" class="cursor-pointer"></tr>
+          </table>
+
+          <div class="p-3" fxLayout="row" fxLayoutAlign="center center">
+            <ng-container *ngIf="!isLoading; else loadingTemplate">
+              <!-- <ng-container *ngIf="error; else emptyTemplate">
+                <mat-error>{{ error }}</mat-error>
+              </ng-container> -->
+              <ng-template #emptyTemplate>
+                <p *ngIf="dataSource?.length == 0">no user .</p>
+              </ng-template>
+            </ng-container>
+            <ng-template #loadingTemplate>
+              <mat-spinner mode="indeterminate" [diameter]="32"> </mat-spinner>
+            </ng-template>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

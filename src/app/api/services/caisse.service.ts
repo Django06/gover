@@ -16,6 +16,7 @@ class CaisseService extends __BaseService {
   static readonly AddCaissePath = '/Caisse/AddCaisse';
   static readonly GetCaisseEnCoursPath = '/Caisse/GetCaisseEnCours';
   static readonly CloturerLaCaissePath = '/Caisse/CloturerLaCaisse';
+  static readonly GetSumByIdUserPath = '/Caisse/GetSumByIdUser';
 
   constructor(
     config: __Configuration,
@@ -138,6 +139,40 @@ class CaisseService extends __BaseService {
    */
   CloturerLaCaisse(prixFinal?: number): __Observable<null> {
     return this.CloturerLaCaisseResponse(prixFinal).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param idUser undefined
+   */
+  GetSumByIdUserResponse(idUser?: number): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (idUser != null) __params = __params.set('idUser', idUser.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/Caisse/GetSumByIdUser`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param idUser undefined
+   */
+  GetSumByIdUser(idUser?: number): __Observable<null> {
+    return this.GetSumByIdUserResponse(idUser).pipe(
       __map(_r => _r.body as null)
     );
   }

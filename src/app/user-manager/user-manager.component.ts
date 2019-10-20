@@ -34,13 +34,22 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   criteria: any = {};
   search$ = new Subject<void>();
   currentUser;
+  UserDetected: any;
+  imageUser;
   constructor(
     private dialog: MatDialog,
     private userService: UsersService,
     private AuthService: AuthentificationService,
     public _snackBar: MatSnackBar
   ) {
-    this.currentUser = this.AuthService.currentUser.nameUser;
+    this.currentUser = this.AuthService.currentUser;
+    this.userService.GetUserById(this.currentUser.IdUser).subscribe(res => {
+      this.UserDetected = res;
+    });
+
+    // this.imageUser = this.UserDetected.Image;
+
+
   }
 
   ngAfterViewInit(): void {}
@@ -51,6 +60,8 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnInit() {
     this.getUsers();
+    console.log("img", this.UserDetected);
+
   }
 
   getUsers() {
@@ -85,7 +96,7 @@ export class UserManagerComponent implements OnInit, AfterViewInit, OnDestroy {
   editUser() {}
   removeUser(user) {
     console.log(user);
-    
+
     this.userService.DeleteUser(user.idUser).subscribe(res => {
       this.search$.next();
       this._snackBar.open("user deleted successfely", "x", {

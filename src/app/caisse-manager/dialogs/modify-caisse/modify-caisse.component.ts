@@ -22,15 +22,15 @@ regSnav: MatSidenav;
     fb: FormBuilder,
     public _snackBar: MatSnackBar
   ) {
-    this.status = "En cours"
+    this.status = 'En cours';
     this.form = fb.group({
-      prixUnit: [this.data.data.prixUnit,[Validators.required]],
-      mois: [this.data.data.mois,[Validators.required]]
+      prixUnit: [this.data.data.prixUnit, [Validators.required]],
+      mois: [this.data.data.mois, [Validators.required]]
     });
     this.formCloture = fb.group({
-      prix: [this.data.data.prixUnit,[Validators.required]],
+      prix: [this.data.data.prixUnit, [Validators.required]],
     });
-   
+
   }
 
   ngOnInit() {}
@@ -40,20 +40,20 @@ regSnav: MatSidenav;
         .AddCaisse(this.form.value)
         .subscribe(res => {
               this.dialogRef.close(this.form.value);
-              this._snackBar.open("caisse added successfely", "x", {
+              this._snackBar.open('caisse added successfely', 'x', {
                 duration: 3000,
-                panelClass: ["success-snackbar"]
+                panelClass: ['success-snackbar']
               });
         });
     }
   }
   cloturerCaisse() {
     if (this.formCloture.value) {
-      this._snackBar.open("not implemented yet", "x", {
+      this._snackBar.open('not implemented yet', 'x', {
         duration: 3000,
-        panelClass: ["danger-snackbar"]
+        panelClass: ['danger-snackbar']
       });
     }
   }
-  
+
 }
