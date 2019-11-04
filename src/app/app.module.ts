@@ -14,7 +14,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ApiModule } from './api/api.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/_interceptor/interceptor';
-
+import { StoreModule } from '@ngrx/store';
 export function tokenGetter() {
   return localStorage.getItem(name);
 }
@@ -41,6 +41,8 @@ const JWT_Module_Options: JwtModuleOptions = {
      JwtModule.forRoot(JWT_Module_Options),
      //api 
      ApiModule.forRoot({ rootUrl: 'http://192.168.1.16:5500' }),
+    //  ngrx store
+    StoreModule.forRoot({})
   ],
   exports: [SharedModule, FormsModule, ReactiveFormsModule],
   providers: [{

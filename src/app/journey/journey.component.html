@@ -62,7 +62,19 @@
       </div>
       <div>
         <form [formGroup]="form" fxLayout="column">
-       <div>
+          <div fxFill fxLayout="row" fxLayoutAlign="center start">
+            <button  type="button"  mat-icon-button
+              matTooltip="Add picture" md-button (click)="imgFileInput.click()">
+              <mat-icon>add_a_photo</mat-icon>
+            </button>
+            <picture *ngIf="ImagePers" >
+              <img width="100px" height="100px" class="custom-avatar"
+              [src]="ImagePers"/>
+            </picture>
+            <input hidden type="file" name="file" accept="image/*" #imgFileInput
+              (change)="ChargerPhoto($event)" />
+          </div> 
+          <div>
         <mat-form-field style="width: 100%;" style="width: 100%;" appearance="fill"> 
           <mat-label><em>montant</em></mat-label>
           <input
@@ -74,7 +86,6 @@
             type="text">
         </mat-form-field>
         <app-message-control [control]="form.get('montant')"></app-message-control>
-    
        </div>
        <div>
         <mat-form-field style="width: 100%;" appearance="fill">
@@ -102,6 +113,7 @@
           <span fxFlex></span>
           <mat-paginator
             class="primary"
+            [length]="dataSource?.count"
             [pageSize]="10"
             [pageSizeOptions]="[10, 25, 50, 100]"
             showFirstLastButtons>
@@ -117,7 +129,7 @@
         </mat-toolbar-row>
       </mat-toolbar>
       <div fxLayout="column">
-        <table mat-table style="width: 100%;" [dataSource]="dataSource">
+        <table mat-table style="width: 100%;" [dataSource]="dataSource?.data">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let element">{{element.idJourneeDetail}}</td>
@@ -179,7 +191,7 @@
               <mat-error>{{ error }}</mat-error>
             </ng-container>
             <ng-template #emptyTemplate>
-              <p *ngIf="dataSource?.length == 0">no journey yet .</p>
+              <p *ngIf="dataSource?.data?.length == 0">no journey yet .</p>
             </ng-template>
           </ng-container>
           <ng-template #loadingTemplate>

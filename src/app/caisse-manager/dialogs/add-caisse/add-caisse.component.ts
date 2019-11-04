@@ -32,8 +32,12 @@ export class AddCaisseComponent implements OnInit {
   addCaisse() {
     if (this.form.value) {
       console.log(this.form.value);
+      const objToSend ={
+          prixUnit: this.form.controls.montant.value,
+          idMois: this.form.controls.mois.value
+      }
       this.caisseService
-        .AddCaisse(this.form.value)
+        .AddCaisse(objToSend)
         .subscribe(res => {
               this.dialogRef.close(this.form.value);
               this._snackBar.open("caisse added successfely", "x", {

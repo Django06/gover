@@ -24,10 +24,20 @@ class JourneeDetailService extends __BaseService {
   ) {
     super(config, http);
   }
-  GetAllJourneeDetailResponse(): __Observable<__StrictHttpResponse<null>> {
+
+  /**
+   * @param params The `JourneeDetailService.GetAllJourneeDetailParams` containing the following parameters:
+   *
+   * - `start`:
+   *
+   * - `count`:
+   */
+  GetAllJourneeDetailResponse(params: JourneeDetailService.GetAllJourneeDetailParams): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.start != null) __params = __params.set('start', params.start.toString());
+    if (params.count != null) __params = __params.set('count', params.count.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/api/JourneeDetail/GetAllJourneeDetail`,
@@ -44,8 +54,16 @@ class JourneeDetailService extends __BaseService {
         return _r as __StrictHttpResponse<null>;
       })
     );
-  }  GetAllJourneeDetail(): __Observable<null> {
-    return this.GetAllJourneeDetailResponse().pipe(
+  }
+  /**
+   * @param params The `JourneeDetailService.GetAllJourneeDetailParams` containing the following parameters:
+   *
+   * - `start`:
+   *
+   * - `count`:
+   */
+  GetAllJourneeDetail(params: JourneeDetailService.GetAllJourneeDetailParams): __Observable<null> {
+    return this.GetAllJourneeDetailResponse(params).pipe(
       __map(_r => _r.body as null)
     );
   }
@@ -56,6 +74,8 @@ class JourneeDetailService extends __BaseService {
    * - `Prix`:
    *
    * - `Motif`:
+   *
+   * - `Image`:
    */
   AddJourneeDetailResponse(params: JourneeDetailService.AddJourneeDetailParams): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
@@ -63,6 +83,7 @@ class JourneeDetailService extends __BaseService {
     let __body: any = null;
     if (params.Prix != null) __params = __params.set('Prix', params.Prix.toString());
     if (params.Motif != null) __params = __params.set('Motif', params.Motif.toString());
+    if (params.Image != null) __params = __params.set('Image', params.Image.toString());
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/JourneeDetail/AddJourneeDetail`,
@@ -86,6 +107,8 @@ class JourneeDetailService extends __BaseService {
    * - `Prix`:
    *
    * - `Motif`:
+   *
+   * - `Image`:
    */
   AddJourneeDetail(params: JourneeDetailService.AddJourneeDetailParams): __Observable<null> {
     return this.AddJourneeDetailResponse(params).pipe(
@@ -135,6 +158,8 @@ class JourneeDetailService extends __BaseService {
    * - `Prix`:
    *
    * - `Motif`:
+   *
+   * - `Image`:
    */
   UpdateJourneeDetailResponse(params: JourneeDetailService.UpdateJourneeDetailParams): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
@@ -143,6 +168,7 @@ class JourneeDetailService extends __BaseService {
     if (params.codeJourneeDetail != null) __params = __params.set('codeJourneeDetail', params.codeJourneeDetail.toString());
     if (params.Prix != null) __params = __params.set('Prix', params.Prix.toString());
     if (params.Motif != null) __params = __params.set('Motif', params.Motif.toString());
+    if (params.Image != null) __params = __params.set('Image', params.Image.toString());
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/api/JourneeDetail/UpdateJourneeDetail`,
@@ -168,6 +194,8 @@ class JourneeDetailService extends __BaseService {
    * - `Prix`:
    *
    * - `Motif`:
+   *
+   * - `Image`:
    */
   UpdateJourneeDetail(params: JourneeDetailService.UpdateJourneeDetailParams): __Observable<null> {
     return this.UpdateJourneeDetailResponse(params).pipe(
@@ -261,11 +289,20 @@ class JourneeDetailService extends __BaseService {
 module JourneeDetailService {
 
   /**
+   * Parameters for GetAllJourneeDetail
+   */
+  export interface GetAllJourneeDetailParams {
+    start?: number;
+    count?: number;
+  }
+
+  /**
    * Parameters for AddJourneeDetail
    */
   export interface AddJourneeDetailParams {
     Prix?: number;
     Motif?: string;
+    Image?: string;
   }
 
   /**
@@ -275,6 +312,7 @@ module JourneeDetailService {
     codeJourneeDetail?: number;
     Prix?: number;
     Motif?: string;
+    Image?: string;
   }
 
   /**
