@@ -5,5 +5,6 @@ export interface JourneeDetailCretaria {
   prixMax?: number;
   motif?: string;
   name?: string;
+  status?: number;
   date?: string;
 }

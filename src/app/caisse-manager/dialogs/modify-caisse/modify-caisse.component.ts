@@ -12,7 +12,7 @@ import { GlobalService, CaisseService } from 'src/app/api/services';
 export class ModifyCaisseComponent implements OnInit {
   form: FormGroup;
   formCloture: FormGroup;
-status;
+  status;
 @ViewChild('regSnav', { static: true })
 regSnav: MatSidenav;
   constructor(
@@ -40,7 +40,7 @@ regSnav: MatSidenav;
         .AddCaisse(this.form.value)
         .subscribe(res => {
               this.dialogRef.close(this.form.value);
-              this._snackBar.open("caisse added successfely", "x", {
+              this._snackBar.open("Caisse added successfely", "x", {
                 duration: 3000,
                 panelClass: ["success-snackbar"]
               });
@@ -49,10 +49,20 @@ regSnav: MatSidenav;
   }
   cloturerCaisse() {
     if (this.formCloture.value) {
-      this._snackBar.open("not implemented yet", "x", {
-        duration: 3000,
-        panelClass: ["danger-snackbar"]
-      });
+      this.caisseService.CloturerLaCaisse(this.formCloture.controls.prix.value).subscribe(res=>{
+        this.dialogRef.close();
+        this._snackBar.open("Caisse closed successfely", "x", {
+          duration: 3000,
+          panelClass: ["success-snackbar"]
+        });
+      },
+      err=>{
+        this._snackBar.open("Error when closing the caisse", "x", {
+          duration: 3000,
+          panelClass: ["danger-snackbar"]
+        });
+      })
+      
     }
   }
   

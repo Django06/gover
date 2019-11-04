@@ -54,7 +54,10 @@ export class HistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource = { ...this.dataSource,data:[] };
       }),
       switchMap(() =>
-      this.JourneeService.GetAllJournee({criteria:this.criteria})
+      this.JourneeService.GetAllJournee({
+        start: this.paginator.pageIndex * this.paginator.pageSize,
+        count: this.paginator.pageSize,
+        criteria:this.criteria})
           .pipe(
             catchError(err => {
               this.isLoading = false;

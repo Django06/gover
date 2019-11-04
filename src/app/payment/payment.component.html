@@ -1,11 +1,11 @@
 <div fxLayout="column">
-  <div fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="75" fxLayout="row" fxLayoutAlign="start" style="overflow-x:auto" fxLayoutGap="10px">
       <div *ngFor="let user of users" class="bg-white shadow-1 color-hover" (click)="getUserSelected(user)"
       [ngClass]="{'isSelected' : user.stat}"
         style="width: 15vw; min-width: 15vw; overflow: hidden; border-radius: 1px;">
-        <img *ngIf="user.image"  class="d-block w-full"  [src]="'data:image/png;base64,' + user.image">
-        <img *ngIf="!user.image"  class="d-block w-full"  src="assets/FakeDP.jpeg">
+        <img *ngIf="user.image"  class="d-block w-full" style="min-height: 14rem;"  [src]="'data:image/png;base64,' + user.image">
+        <img *ngIf="!user.image"  class="d-block w-full" style="min-height: 14rem;"  src="assets/FakeDP.jpeg">
         <div class="px-1 py-1">
           <p style="margin: 0; font-weight:400"
             class="small font-weight-medium text-uppercase text-muted text-center lts-2px">
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div fxFlex="25" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+    <div fxFlex="25" fxLayoutAlign="end">
       <div class="bg-white shadow-1" style="width: 20vw;overflow: hidden; border-radius: 1px;">
         <div class="px-1 py-1">
          <div fxLayout="column" fxLayoutAlign="center start">
@@ -31,8 +31,8 @@
             All Credit : <strong style="color: #eace60"> {{caisseInfo.totalToPay}}</strong>
           </span>
          </div>
-        
         </div>
+
         <div fxLayout="column" fxLayoutAlign="center">
           <div> <strong style="height: 20vh;font-size: 91px;" class="float-left mx-auto">{{total}}</strong></div>
           <div>
@@ -43,10 +43,11 @@
        </div>
       </div>
     </div>
+
   </div>
 
 
-  <div *ngIf="dataSource?.length" class=" p-relative  shadow-1 " style="overflow: hidden; border-radius: 1px; margin-top: 10px;">
+  <div *ngIf="dataSource?.length" class=" p-relative shadow-1 " style="overflow: hidden; border-radius: 1px; margin-top: 10px;">
     <mat-card class="card-table example-card">
       <mat-card-content>
         <div style="height: 37vh;overflow: auto;" fxLayout="column">

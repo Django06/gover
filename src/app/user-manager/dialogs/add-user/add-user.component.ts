@@ -28,8 +28,6 @@ export class AddUserComponent implements OnInit {
   ngOnInit() {}
   addUser() {
     if (this.form.value) {
-      console.log(this.form.value);
-
       this.usersService
         .AddUser({
           Login: this.form.get("login").value,
@@ -59,8 +57,6 @@ export class AddUserComponent implements OnInit {
 
   _handleReaderLoaded(e) {
     var reader = e.target;
-    this.ImagePers = reader.result;
-    
-    
+    this.ImagePers = reader.result; 
   }
 }

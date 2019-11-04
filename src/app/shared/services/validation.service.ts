@@ -14,7 +14,7 @@ export class ValidationService {
 
   static NumberValidator(control) {
     // Visa, MasterCard, American Express, Diners Club, Discover, JCB
-    if (control.value.match(/^[0-9]*$/)) {
+    if (control.value.match(/^[0-9]*$/) ||control.value.match(/^[0-9]+.[0-9]+$/)) {
       return null;
     } else {
       return { 'digitNumber': true };

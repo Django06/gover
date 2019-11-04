@@ -16,9 +16,8 @@ export class CaisseManagerComponent implements OnInit {
 this.getAllcaisse();
   }
 getAllcaisse(){
-    this.caisseService.GetAllCaisse().subscribe(res => {
-      this.caises = res;
-      console.log(res);
+    this.caisseService.GetAllCaisse().subscribe((res:any) => {
+      this.caises = res.reverse();
     });
 }
   ngOnInit() {}
@@ -34,9 +33,7 @@ getAllcaisse(){
         }
       });
   }
-  modifyCaisse(caiss) {
-    console.log(caiss);
-    
+  modifyCaisse(caiss) {    
     this.dialog
       .open(ModifyCaisseComponent, {
         width: "40vw",

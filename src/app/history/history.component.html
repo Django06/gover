@@ -77,10 +77,10 @@
             <span fxFlex></span>
             <mat-paginator
               class="primary"
+              [length]="dataSource?.count"
               [pageSize]="dataSource?.data"
               [pageSizeOptions]="[10, 25, 50, 100]"
-              showFirstLastButtons
-            >
+              showFirstLastButtons>
             </mat-paginator>
   
             <div class="button-row">
@@ -138,7 +138,7 @@
                 <mat-error>{{ error }}</mat-error>
               </ng-container>
               <ng-template #emptyTemplate>
-                <p *ngIf="dataSource?.data.length == 0">no history yet .</p>
+                <p *ngIf="dataSource?.data?.length == 0">no history yet .</p>
               </ng-template>
             </ng-container>
             <ng-template #loadingTemplate>

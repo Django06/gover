@@ -25,13 +25,14 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ["id", "user","montant", "motif", "actions"];
   @ViewChild(MatPaginator, { static: false })
   paginator: MatPaginator;
-  dataSource = [];
+  dataSource = {data:[],count:0}
   isLoading: boolean;
   error: string;
   criteria: any = {};
   search$ = new Subject<void>();
   caisseDetails;
   form: FormGroup;
+  ImagePers:string;
   
   constructor(
     fb: FormBuilder,
@@ -43,11 +44,11 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this.form = fb.group({
       montant: ["", [Validators.required,ValidationService.NumberValidator,ValidationService.notNull]],
-      motif: ["", [Validators.required ]] 
+      motif: ["", [Validators.required ]],
+      image:[""]
     });
     
   }
-
   ngOnInit() {
     this.getCaisse();
   }
@@ -59,10 +60,15 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
       tap(() => {
         this.isLoading = true;
         this.error = undefined;
-        this.dataSource = { ...this.dataSource };
+        this.dataSource = { ...this.dataSource,data:[] };
       }),
       switchMap(() =>
-      this.journeyService.GetAllJourneeDetail()
+      this.journeyService.GetAllJourneeDetail(
+        {
+          start: this.paginator.pageIndex * this.paginator.pageSize,
+          count: this.paginator.pageSize
+        }
+      )
           .pipe(
             catchError(err => {
               this.isLoading = false;
@@ -74,7 +80,8 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
     )
     .subscribe((res: any) => {
       this.isLoading = false;
-      this.dataSource = res;
+      this.dataSource.data = res.data;
+      this.dataSource.count = res.count;
     });
 
   }
@@ -116,21 +123,22 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-    getCaisse(){
+  getCaisse(){
     this.caisseService.GetCaisseEnCours().subscribe(res => {
       if (res) {
-        console.log(res);
+        console.log("re",res);
         this.caisseDetails = res;
       }
     });
   }
   addJourney() {
      if (this.form.valid) {
-      if(this.form.get('montant').value !=0){
+      if(this.form.get('montant').value !=0){        
         this.journeyService
         .AddJourneeDetail({
           Prix: this.form.controls.montant.value,
           Motif: this.form.controls.motif.value,
+          Image:this.ImagePers ? this.ImagePers.replace('data:image/png;base64,','') : null
         })
         .subscribe(res => {
           if (res) {
@@ -155,11 +163,24 @@ export class JourneyComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
   }
-  
   getJourneys() {
     this.search$.next();
   }
- 
+  ChargerPhoto(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+  _handleReaderLoaded(e) {
+    var reader = e.target;
+    this.ImagePers = reader.result; 
+  }
   ngOnDestroy(): void {
     this.search$.complete();
     this.unsubscribe$.next();
