@@ -106,7 +106,7 @@
         </form>
       </div>
     </div>
-    <div fxFlex="70" class="card-table" style="height: 65vh;overflow: auto;">
+    <div fxFlex="70" class="card-table">
       <mat-toolbar>
         <mat-toolbar-row>
           <span> Journey List:</span>
@@ -128,7 +128,7 @@
           </div>
         </mat-toolbar-row>
       </mat-toolbar>
-      <div fxLayout="column">
+      <div fxLayout="column" style="height: calc(100vh - 330px);overflow: auto;">
         <table mat-table style="width: 100%;" [dataSource]="dataSource?.data">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>#</th>

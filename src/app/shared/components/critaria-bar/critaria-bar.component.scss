@@ -1,0 +1,13 @@
+mat-toolbar{
+    background-color: #eae9e1;
+    span{
+        margin-right: 1rem;
+    }
+    mat-chip{
+        background: #efd673;
+    }
+}
+
+.mat-standard-chip {
+    border-radius: 5px !important;
+}

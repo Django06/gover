@@ -8,6 +8,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { NumberOnlyDirective } from "./_directives/number-only.directive";
 import { MessageControlComponent } from "./services/message-control/message-control.component";
 import { ConfirmationDialogComponent } from "./_dialogs/confirmation-dialog/confirmation-dialog.component";
+import { CritariaBarComponent } from './components/critaria-bar/critaria-bar.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +25,8 @@ import { ConfirmationDialogComponent } from "./_dialogs/confirmation-dialog/conf
   declarations: [
     NumberOnlyDirective,
     MessageControlComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CritariaBarComponent
   ],
   exports: [
     MaterialModule,
@@ -33,7 +35,8 @@ import { ConfirmationDialogComponent } from "./_dialogs/confirmation-dialog/conf
     ReactiveFormsModule,
     NumberOnlyDirective,
     MessageControlComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    CritariaBarComponent
   ],
   entryComponents: [ConfirmationDialogComponent]
 })

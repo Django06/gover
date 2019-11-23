@@ -1,0 +1,19 @@
+  <mat-toolbar *ngIf="objectKeys(criteria).length !=0" fxLayout="row" fxLayoutAlign="start center">
+    <span>Filter by: </span>
+    <mat-chip-list>
+      <ng-container *ngFor="let cr of objectKeys(criteria)">
+        <mat-chip *ngIf="criteria[cr]" removable (removed)="removeEmiter(cr)">
+          <div class="chip-text text-truncate">
+            <ng-container *ngIf="!isDate(criteria[cr]); else dateTemplate">
+              <strong>{{cr + ' : ' + criteria[cr]}}</strong>
+            </ng-container>
+            <ng-template #dateTemplate>
+              <strong>{{cr + ' : '}} {{criteria[cr]| date: 'dd/MM/yyyy'}}</strong>
+            </ng-template>
+  
+          </div>
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </ng-container>
+    </mat-chip-list>
+  </mat-toolbar>

@@ -1,0 +1,58 @@
+<h1 mat-dialog-title>Filter</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="column">
+
+    <mat-form-field fxFlex class="w-100" appearance="outline">
+      <mat-label><em> User</em></mat-label>
+      <mat-select formControlName="name">
+        <mat-option *ngFor="let user of users$" [value]="user.name">
+          {{ user.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+   <mat-form-field fxFlex class="w-100" appearance="outline">
+              <mat-label><em>Date</em></mat-label>
+              <input
+                matInput
+                [matDatepicker]="pickerStart"
+                formControlName="date"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="pickerStart"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #pickerStart></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label><em>Min</em></mat-label>
+              <input
+                appNumberOnly
+                numericType="decimal"
+                matInput
+                formControlName="prixMin"
+                placeholder="ex: 1234"
+                type="number"
+                min="0"
+              />
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label><em>Max</em></mat-label>
+              <input
+                appNumberOnly
+                numericType="decimal"
+                matInput
+                formControlName="prixMax"
+                placeholder="ex: 1234"
+                type="number"
+              />
+            </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button color="primary" (click)="search()">
+    <span *ngIf="!isLoading">filter</span>
+  </button>
+</div>

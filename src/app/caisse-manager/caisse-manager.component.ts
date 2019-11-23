@@ -17,7 +17,7 @@ this.getAllcaisse();
   }
 getAllcaisse(){
     this.caisseService.GetAllCaisse().subscribe((res:any) => {
-      this.caises = res.reverse();
+      this.caises = res;
     });
 }
   ngOnInit() {}
