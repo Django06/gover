@@ -1,15 +1,82 @@
-<div  class="w-100" style="height: 90%;" fxLayout="column" fxLayoutAlign="center center">
-    <img class="logo-img" src="assets/logo.png" />
-    <div style="width: 45vw;text-align: center;margin-bottom: 10px">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-      ullamcorper nisl erat, vel convallis elit fermentum pellentesque. Sed
-      mollis velit facilisis facilisis viverra.
+<div fxLayout="row" fxLayoutAlign="space-around start" class="padding">
+  <div fxFlex="70">
+  <mat-card>
+
+    <div class="example-container">
+      <h2>To do</h2>
+
+      <div
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[doneList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+      </div>
     </div>
-    <button 
-    style="background-color: #efd673;"
-    mat-button
-    (click)="goToJourney()"
-  >
-    <span style=" color:#2B2D42">Add journey</span>
-  </button>
+
+    <div class="example-container">
+      <h2>Done</h2>
+
+      <div
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[todoList]"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+      </div>
+    </div>
+
+  </mat-card>
+
   </div>
+  <div fxFlex="25">
+      <mat-card>
+          <mat-card-header>
+              <div mat-card-avatar><img *ngIf="user.image" mat-card-avatar  [src]="'data:image/png;base64,' + user.image">
+              </div>
+              <mat-card-title><h1>Profile</h1></mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <h5>Prenom</h5><p>{{user.name}}</p>
+                <h5>Login</h5><p>{{user.login}}</p>
+                <h5>Credit</h5><p>{{user.credit}}</p>
+
+            </mat-card-content>
+      </mat-card>
+  </div>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="space-around start" class="padding">
+  <div fxFlex="25">
+    <mat-card>
+        <mat-card-header>
+            <!-- <div mat-card-avatar><img *ngIf="user.image" mat-card-avatar  [src]="'data:image/png;base64,' + user.image"> -->
+            <mat-card-title><h1>Caisse</h1></mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+              <h5>Mois</h5><p>{{caisse.mois}}</p>
+              <h5>Prix Initial</h5><p>{{caisse.prixUnit}}</p>
+              <h5>Reste</h5><p>{{caisse.rest}}</p>
+
+            </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="70">
+<mat-card>
+<div style="display: block">
+    <canvas baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [colors]="pieChartColors"
+            [chartType]="pieChartType">
+          </canvas>
+  </div>
+    </mat-card>
+  </div>
+</div>
+

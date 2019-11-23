@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiModule } from './api/api.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/_interceptor/interceptor';
+import { ChartsModule } from 'ng2-charts';
+
 
 
 
@@ -40,6 +42,7 @@ const JWT_Module_Options: JwtModuleOptions = {
     CoreModule,
     HttpClientModule,
     CoreModule,
+    ChartsModule,
      // JwtHelper
      JwtModule.forRoot(JWT_Module_Options),
      // api

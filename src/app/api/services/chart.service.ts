@@ -19,10 +19,15 @@ class ChartService extends __BaseService {
   ) {
     super(config, http);
   }
-  GetResponse(): __Observable<__StrictHttpResponse<null>> {
+
+  /**
+   * @param idCaisse undefined
+   */
+  GetResponse(idCaisse?: number): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (idCaisse != null) __params = __params.set('idCaisse', idCaisse.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/Chart/Get`,
@@ -39,8 +44,12 @@ class ChartService extends __BaseService {
         return _r as __StrictHttpResponse<null>;
       })
     );
-  }  Get(): __Observable<null> {
-    return this.GetResponse().pipe(
+  }
+  /**
+   * @param idCaisse undefined
+   */
+  Get(idCaisse?: number): __Observable<null> {
+    return this.GetResponse(idCaisse).pipe(
       __map(_r => _r.body as null)
     );
   }
